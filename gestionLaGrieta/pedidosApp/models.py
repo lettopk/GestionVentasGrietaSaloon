@@ -1,9 +1,9 @@
 from django.db import models
 from django.contrib.auth.models import User
-from django.utils import timezone
-
+from inventarioApp.models import producto
 # Create your models here.
 
+    #Modelo-Tabla Mtodo de pago 
 class metodo_pago(models.Model):
     titulo = models.CharField(max_length=20)
     imagen = models.ImageField(upload_to= 'metodo_pago')  #subcarpeta para guardar imagenes
@@ -16,8 +16,11 @@ class metodo_pago(models.Model):
     def __str__(self):
         return self.titulo
     
+    #Modelo-Tabla pedido
 class pedido(models.Model):
     mesa = models.CharField(max_length=30)
+    producto = models.ManyToManyField(producto)                     #Relacionado a los productos (muchos a muchos)
+    metodos_pago = models.ManyToManyField(metodo_pago)
     cantidad = models.IntegerField()
     precio_unitario = models.IntegerField()
     created = models.DateTimeField(auto_now_add= True)

@@ -101,6 +101,7 @@
         <thead>
           <tr>
             <th>Mesa</th>
+            <th>Producto</th>
             <th>Cantidad</th>
             <th>Precio Unitario</th>
             <th>Fecha de Creación</th>
@@ -113,6 +114,10 @@
           {% for pedido in pedidos %}
               <tr>
                 <td>{{pedido.mesa}}</td>
+                <td>{% for producto in pedido.producto.all %}
+                      {{producto.titulo}} 
+                      <img  src="{{producto.imagen.url}}" style="width:15%">
+                    {% endfor %}</td> 
                 <td>{{pedido.cantidad}}</td>
                 <td>{{pedido.precio_unitario}}</td>
                 <td>{{pedido.created}}</td>
