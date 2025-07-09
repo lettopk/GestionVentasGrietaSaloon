@@ -3,135 +3,289 @@
 {% load static %}
 
 {% block content %}
+  <!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
   <title>Pedidos - La Grieta</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative&family=Montserrat&display=swap" rel="stylesheet">
   <style>
-      :root {
-        --negro: rgb(26, 26, 26);
-        --violeta: rgb(75, 0, 130);
-        --azul: rgb(0, 191, 255);
-        --verde: rgb(60, 179, 113);
-        --dorado: rgb(255, 215, 0);
-      }
+    :root {
+      --negro: rgb(26, 26, 26);
+      --violeta: rgb(75, 0, 130);
+      --azul: rgb(0, 191, 255);
+      --verde: rgb(60, 179, 113);
+      --dorado: rgb(255, 215, 0);
+    }
 
-      body {
-        background-color: var(--negro);
-        color: white;
-        font-family: 'Montserrat', sans-serif;
-        margin: 0;
-        padding: 0;
-      }
+    body {
+      background-color: var(--negro);
+      color: white;
+      font-family: 'Montserrat', sans-serif;
+      margin: 0;
+      padding: 0;
+    }
 
-      header {
-        background: linear-gradient(90deg, var(--violeta), var(--azul));
-        padding: 20px;
-        text-align: center;
-        font-family: 'Cinzel Decorative', cursive;
-        font-size: 2.2rem;
-        color: var(--dorado);
-        box-shadow: 0 0 20px var(--violeta);
-      }
+    header {
+      background: linear-gradient(90deg, var(--violeta), var(--azul));
+      padding: 20px;
+      text-align: center;
+      font-family: 'Cinzel Decorative', cursive;
+      font-size: 2.2rem;
+      color: var(--dorado);
+      box-shadow: 0 0 20px var(--violeta);
+    }
 
-      .container {
-        padding: 30px;
-        max-width: 1200px;
-        margin: auto;
-      }
+    .main {
+      display: flex;
+      padding: 20px;
+      gap: 20px;
+    }
 
-      h2 {
-        color: var(--azul);
-        margin-bottom: 20px;
-        text-align: center;
-      }
+    .productos {
+      width: 30%;
+      background-color: #1f1f1f;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px #000;
+      height: fit-content;
+    }
 
-      table {
-        width: 100%;
-        border-collapse: collapse;
-        background-color: #1f1f1f;
-        box-shadow: 0 0 10px #000;
-      }
+    .productos table {
+      width: 100%;
+      border-collapse: collapse;
+    }
 
-      th, td {
-        border: 1px solid var(--violeta);
-        padding: 12px;
-        text-align: center;
-        font-size: 0.95rem;
-      }
+    .productos th, .productos td {
+      border: 1px solid var(--violeta);
+      padding: 8px;
+      text-align: center;
+    }
 
-      th {
-        background-color: var(--violeta);
-        color: var(--dorado);
-        font-weight: bold;
-      }
+    .productos th {
+      background-color: var(--violeta);
+      color: var(--dorado);
+    }
 
-      tr:hover {
-        background-color: #2a2a2a;
-      }
+    .pedidos {
+      width: 70%;
+    }
 
-      footer {
-        text-align: center;
-        padding: 20px;
-        color: #888;
-        font-size: 0.9rem;
-      }
+    .btn-agregar {
+      background-color: var(--verde);
+      color: black;
+      font-weight: bold;
+      border: none;
+      padding: 10px 20px;
+      margin-bottom: 20px;
+      border-radius: 6px;
+      cursor: pointer;
+    }
 
-      .badge {
-        padding: 4px 8px;
-        border-radius: 5px;
-        font-weight: bold;
-      }
+    .pedido {
+      background-color: #1f1f1f;
+      padding: 20px;
+      margin-bottom: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px #000;
+    }
 
-      .badge-efectivo {
-        background-color: var(--verde);
-        color: black;
-      }
+    .pedido-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 1.2rem;
+      margin-bottom: 10px;
+      color: var(--azul);
+    }
 
-      .badge-digital {
-        background-color: var(--dorado);
-        color: black;
-      }
+    .btn-toggle {
+      background-color: var(--violeta);
+      border: none;
+      color: var(--dorado);
+      font-size: 1.2rem;
+      padding: 4px 12px;
+      border-radius: 50%;
+      cursor: pointer;
+    }
+
+    .pedido-content {
+      display: block;
+      transition: all 0.3s ease;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    th, td {
+      border: 1px solid var(--violeta);
+      padding: 10px;
+      text-align: center;
+      font-size: 0.95rem;
+    }
+
+    th {
+      background-color: var(--violeta);
+      color: var(--dorado);
+    }
+
+    .total, .cancelado {
+      text-align: right;
+      font-weight: bold;
+      color: var(--dorado);
+      margin-top: 10px;
+    }
+
+    .metodo-pago {
+      text-align: right;
+      font-style: italic;
+      color: var(--verde);
+    }
+
+    .badge {
+      padding: 4px 8px;
+      border-radius: 5px;
+      font-weight: bold;
+      font-size: 0.85rem;
+    }
+
+    .badge-efectivo {
+      background-color: var(--verde);
+      color: black;
+    }
+
+    .badge-digital {
+      background-color: var(--dorado);
+      color: black;
+    }
   </style>
+</head>
+<body>
 
-  <body>
+  <header>La Grieta - Pedidos</header>
 
-    <header>Pedidos - La Grieta</header>
-
-    <div class="container">
-      <h2>🧾 Lista de Pedidos</h2>
+  <div class="main">
+    <!-- Productos disponibles -->
+    <div class="productos">
+      <h2>🛒 Productos</h2>
       <table>
         <thead>
           <tr>
-            <th>Mesa</th>
             <th>Producto</th>
-            <th>Cantidad</th>
-            <th>Precio Unitario</th>
-            <th>Fecha de Creación</th>
-            <th>Fecha de Actualización</th>
-            <th>Vendedor</th>
-            <th>Método de Pago</th>
+            <th>Precio</th>
           </tr>
         </thead>
         <tbody>
-          {% for pedido in pedidos %}
-              <tr>
-                <td>{{pedido.mesa}}</td>
-                <td>{% for producto in pedido.producto.all %}
-                      {{producto.titulo}} 
-                      <img  src="{{producto.imagen.url}}" style="width:15%">
-                    {% endfor %}</td> 
-                <td>{{pedido.cantidad}}</td>
-                <td>{{pedido.precio_unitario}}</td>
-                <td>{{pedido.created}}</td>
-                <td>{{pedido.updated}}</td>
-                <td>{{pedido.vendedor}}</td>
-                <td>{% for metodo_pago in pedido.metodos_pago.all %}
-                      {{metodo_pago.titulo}} 
-                      <img  src="{{metodo_pago.imagen.url}}" style="width:10%">
-                    {% endfor %}</td>
-              </tr>
+          <tr><td>Cerveza</td><td>$8.000</td></tr>
+          <tr><td>Jugo</td><td>$5.000</td></tr>
+          <tr><td>Hora Arcade</td><td>$10.000</td></tr>
+          <tr><td>Fichas x 20</td><td>$2.500</td></tr>
+          {% for producto in productos %}
+              <tr><td>{{producto.titulo}} 
+              <img  src="{{producto.imagen.url}}" style="width:15%"></td>
+              <td>{{producto.precio_unitario}} </td></tr>
           {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Pedidos -->
+    <div class="pedidos">
+      <button class="btn-agregar">+ Agregar Pedido</button>
+
+      <!-- Pedido ejemplo -->
+        <div class="pedido">
+          <div class="pedido-header">
+            <td>🪑 Mesa 1</td>
+            <td>📆 Fecha: 9 de julio de 2025 a las 23:47</td>
+            <button class="btn-toggle" onclick="togglePedido(this)">−</button>
+          </div>
+          <div class="pedido-content">
+            <table>
+              <thead>
+                <tr>
+                  <th>Producto</th>
+                  <th>Cantidad</th>
+                  <th>Precio</th>
+                  <th>Subtotal</th>
+                </tr>
+              </thead>
+              <tbody class="pedido-body">
+                <tr><td>Cerveza</td><td>2</td><td>$8.000</td><td>$16.000</td></tr>
+                <tr><td>Fichas x 20</td><td>1</td><td>$2.500</td><td>$2.500</td></tr>
+              </tbody>
+            </table>
+
+            <button class="btn-agregar" style="margin: 15px 0;" onclick="agregarProducto(this)">+ Agregar producto</button>
+
+            <div class="total">💰 Total: $18.500</div>
+            <div class="cancelado">🧾 Cancelado: $20.000</div>
+            <div class="metodo-pago">💲 Pago: <span class="badge badge-digital">Nequi</span></div>
+          </div>
+        </div>
+
+      <!-- Pedidos en base de datos -->
+        {% for pedido in pedidos %}
+        <div class="pedido">
+          <div class="pedido-header">
+            <td>🪑{{pedido.mesa}}</td>
+            <td>📆 Fecha: {{pedido.updated}}</td>
+            <button class="btn-toggle" onclick="togglePedido(this)">−</button>
+          </div>
+            <div class="pedido-content">
+            <table>
+              <thead>
+                <tr>
+                  <th>Producto</th>
+                  <th>Cantidad</th>
+                  <th>Precio</th>
+                  <th>Subtotal</th>
+                </tr>
+              </thead>
+              <tbody class="pedido-body">
+                <tr>
+                    {% for producto in pedido.producto.all %}
+                      <td>{{producto.titulo}}</td>
+                    {% endfor %}
+                    <td>{{pedido.cantidad}}</td>
+                    <td>{{pedido.precio_unitario}}</td>
+                    <td>Por definir</td>
+                </tr>
+              </tbody>
+              </table>
+                <button class="btn-agregar" style="margin: 15px 0;" onclick="agregarProducto(this)">+ Agregar producto</button>
+                <div class="total">💰 Total: $18.500</div>
+                <div class="cancelado">🧾 Cancelado: $20.000</div>
+                <div class="metodo-pago">💲 Pago: {% for metodo_pago in pedido.metodos_pago.all %}
+                          {{metodo_pago.titulo}} 
+                          <img  src="{{metodo_pago.imagen.url}}" style="width:3%">
+                        {% endfor %}</span></div>
+            </div>              
+        </div>
+        {% endfor %}
       </tbody>
     </table>
   </div>
 
+    </div>
+  </div>
+
+  <script>
+    function togglePedido(btn) {
+      const content = btn.closest('.pedido').querySelector('.pedido-content');
+      if (content.style.display === 'none') {
+        content.style.display = 'block';
+        btn.textContent = '−';
+      } else {
+        content.style.display = 'none';
+        btn.textContent = '+';
+      }
+    }
+  </script>
+
+</body>
+</html>
 
 {% endblock %}

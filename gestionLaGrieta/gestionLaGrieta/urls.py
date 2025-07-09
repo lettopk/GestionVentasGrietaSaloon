@@ -23,4 +23,6 @@ urlpatterns = [
     path('', include('gestionLaGrietaApp.urls')),
     path ('inventario/', include('inventarioApp.urls')),
     path ('pedidos/', include('pedidosApp.urls')),
+    path ('gastos/', include('gastosApp.urls')),
+    path ('registro_ventas/', include('registro_ventasApp.urls')),
 ]
