@@ -1,0 +1,132 @@
+{% extends "gestionLaGrietaApp/base.html" %}
+
+{% load static %}
+
+{% block content %}
+  <title>Pedidos - La Grieta</title>
+  <style>
+      :root {
+        --negro: rgb(26, 26, 26);
+        --violeta: rgb(75, 0, 130);
+        --azul: rgb(0, 191, 255);
+        --verde: rgb(60, 179, 113);
+        --dorado: rgb(255, 215, 0);
+      }
+
+      body {
+        background-color: var(--negro);
+        color: white;
+        font-family: 'Montserrat', sans-serif;
+        margin: 0;
+        padding: 0;
+      }
+
+      header {
+        background: linear-gradient(90deg, var(--violeta), var(--azul));
+        padding: 20px;
+        text-align: center;
+        font-family: 'Cinzel Decorative', cursive;
+        font-size: 2.2rem;
+        color: var(--dorado);
+        box-shadow: 0 0 20px var(--violeta);
+      }
+
+      .container {
+        padding: 30px;
+        max-width: 1200px;
+        margin: auto;
+      }
+
+      h2 {
+        color: var(--azul);
+        margin-bottom: 20px;
+        text-align: center;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        background-color: #1f1f1f;
+        box-shadow: 0 0 10px #000;
+      }
+
+      th, td {
+        border: 1px solid var(--violeta);
+        padding: 12px;
+        text-align: center;
+        font-size: 0.95rem;
+      }
+
+      th {
+        background-color: var(--violeta);
+        color: var(--dorado);
+        font-weight: bold;
+      }
+
+      tr:hover {
+        background-color: #2a2a2a;
+      }
+
+      footer {
+        text-align: center;
+        padding: 20px;
+        color: #888;
+        font-size: 0.9rem;
+      }
+
+      .badge {
+        padding: 4px 8px;
+        border-radius: 5px;
+        font-weight: bold;
+      }
+
+      .badge-efectivo {
+        background-color: var(--verde);
+        color: black;
+      }
+
+      .badge-digital {
+        background-color: var(--dorado);
+        color: black;
+      }
+  </style>
+
+  <body>
+
+    <header>Pedidos - La Grieta</header>
+
+    <div class="container">
+      <h2>🧾 Lista de Pedidos</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Mesa</th>
+            <th>Cantidad</th>
+            <th>Precio Unitario</th>
+            <th>Fecha de Creación</th>
+            <th>Fecha de Actualización</th>
+            <th>Vendedor</th>
+            <th>Método de Pago</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for pedido in pedidos %}
+              <tr>
+                <td>{{pedido.mesa}}</td>
+                <td>{{pedido.cantidad}}</td>
+                <td>{{pedido.precio_unitario}}</td>
+                <td>{{pedido.created}}</td>
+                <td>{{pedido.updated}}</td>
+                <td>{{pedido.vendedor}}</td>
+                <td>{% for metodo_pago in pedido.metodos_pago.all %}
+                      {{metodo_pago.titulo}} 
+                      <img  src="{{metodo_pago.imagen.url}}" style="width:10%">
+                    {% endfor %}</td>
+              </tr>
+          {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+
+{% endblock %}

@@ -1,0 +1,116 @@
+{% extends "gestionLaGrietaApp/base.html" %}
+
+{% load static %}
+
+{% block content %}
+  <title>Inventario - La Grieta</title>
+
+  <style>
+    :root {
+      --negro: rgb(26, 26, 26);
+      --violeta: rgb(75, 0, 130);
+      --azul: rgb(0, 191, 255);
+      --verde: rgb(60, 179, 113);
+      --dorado: rgb(255, 215, 0);
+    }
+
+    body {
+      background-color: var(--negro);
+      color: white;
+      font-family: 'Montserrat', sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+
+    header {
+      background: linear-gradient(90deg, var(--violeta), var(--azul));
+      padding: 20px;
+      text-align: center;
+      font-family: 'Cinzel Decorative', cursive;
+      font-size: 2.2rem;
+      color: var(--dorado);
+      box-shadow: 0 0 20px var(--violeta);
+    }
+
+    .container {
+      padding: 30px;
+      max-width: 1200px;
+      margin: auto;
+    }
+
+    h2 {
+      color: var(--azul);
+      margin-bottom: 20px;
+      text-align: center;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background-color: #1f1f1f;
+      box-shadow: 0 0 10px #000;
+    }
+
+    th, td {
+      border: 1px solid var(--violeta);
+      padding: 12px;
+      text-align: center;
+      font-size: 0.95rem;
+    }
+
+    th {
+      background-color: var(--violeta);
+      color: var(--dorado);
+      font-weight: bold;
+    }
+
+    td img {
+      width: 60px;
+      height: 60px;
+      object-fit: cover;
+      border: 2px solid var(--verde);
+      border-radius: 5px;
+    }
+
+    tr:hover {
+      background-color: #2a2a2a;
+    }
+
+    footer {
+      text-align: center;
+      padding: 20px;
+      color: #888;
+      font-size: 0.9rem;
+    }
+  </style>
+  <header>Inventario - La Grieta</header>
+  <div class="container">
+    <h2>📦 Control de Inventario</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Imagen</th>
+            <th>Título</th>
+            <th>Descripción</th>
+            <th>Cantidad</th>
+            <th>Precio</th>
+            <th>Fecha de carga</th>
+            <th>Última modificación</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for producto in productos %}
+              <tr>
+                <td><img  src="{{producto.imagen.url}}" alt=""></td>
+                <td>{{producto.titulo}}</td>
+                <td>{{producto.descripcion}}</td>
+                <td>{{producto.cantidad}}</td>
+                <td>{{producto.precio_unitario}}</td>
+                <td>{{producto.created}}</td>
+                <td>{{producto.update}}</td>
+              </tr>
+            {% endfor %}
+        
+      </table>
+  </div>
+{% endblock %}
