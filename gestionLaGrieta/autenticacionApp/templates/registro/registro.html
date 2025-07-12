@@ -1,0 +1,91 @@
+{% extends "gestionLaGrietaApp/base.html" %}
+
+{% load static %}
+{% load crispy_forms_tags %}
+{% block content %}
+
+<style>
+  :root {
+    --bg-dark: rgb(26, 26, 26);
+    --violeta: rgb(75, 0, 130);
+    --azul: rgb(0, 191, 255);
+    --verde: rgb(60, 179, 113);
+    --dorado: rgb(255, 215, 0);
+  }
+
+  body {
+    background-color: var(--bg-dark);
+    color: white;
+    font-family: 'Montserrat', sans-serif;
+  }
+
+  h1, h2, h3 {
+    font-family: 'Cinzel Decorative', serif;
+    color: var(--dorado);
+  }
+
+  .form-control, .form-select {
+    background-color: #2a2a2a;
+    border: 1px solid var(--violeta);
+    color: white;
+  }
+
+  .form-control:focus, .form-select:focus {
+    border-color: var(--azul);
+    box-shadow: 0 0 0 0.2rem rgba(0, 191, 255, 0.25);
+    background-color: #333;
+    color: white;
+  }
+
+  .btn-primary {
+    background-color: var(--violeta);
+    border-color: var(--azul);
+    color: var(--dorado);
+    font-weight: bold;
+  }
+
+  .btn-primary:hover {
+    background-color: var(--azul);
+    color: black;
+  }
+
+  .card {
+    background-color: #1c1c1c;
+    border: 1px solid var(--violeta);
+    box-shadow: 0 0 10px rgba(0, 191, 255, 0.2);
+    border-radius: 1rem;
+  }
+
+  .form-label {
+    color: var(--verde);
+    font-weight: 600;
+  }
+
+  ::placeholder {
+    color: #aaa;
+    font-style: italic;
+  }
+
+  a {
+    color: var(--azul);
+  }
+
+  a:hover {
+    color: var(--dorado);
+    text-decoration: underline;
+  }
+</style>
+
+<div class="container mt-5">
+  <div class="card p-4">
+    <h2 class="mb-4 text-center">Registro de Usuario</h2>
+    <form method="post">
+      {% csrf_token %}
+      {{ form|crispy }}
+      <div class="text-center mt-3">
+        <button type="submit" class="btn btn-primary">Registrarse</button>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}
