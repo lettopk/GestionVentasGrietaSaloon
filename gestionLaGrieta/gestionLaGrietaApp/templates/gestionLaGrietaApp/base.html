@@ -25,6 +25,17 @@
         <span class="site-heading-lower">Gestión LA GRIETA</span>
       </h1>
 
+       <!-- Autenticacion -->
+    <div style ="color:white; text-align: right; margin-right:100px"> 
+      {% if user.is_authenticated %}
+        Hola: {{user.username}} &nbsp; &nbsp; <a href="{% url 'cerrar_sesion' %}" style="color:white;">Cerrar sesion</a>
+
+      {% else %}
+        <a href="{% url 'iniciar_sesion' %}" style="color:white;">Login</a> &nbsp; &nbsp; <a href="{% url 'autenticacion' %}" style="color:white;">Log UP</a>
+        
+      {% endif %}
+    </div>
+
 
  <!-- Navbar -->
  <nav class="navbar navbar-expand-lg navbar-dark py-lg-4" id="mainNav">
