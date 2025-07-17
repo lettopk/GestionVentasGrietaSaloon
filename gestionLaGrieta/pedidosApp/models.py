@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 from inventarioApp.models import producto
 # Create your models here.
 
-    #Modelo-Tabla Mtodo de pago 
+    #Modelo-Tabla Metodo de pago 
 class metodo_pago(models.Model):
     titulo = models.CharField(max_length=20)
     imagen = models.ImageField(upload_to= 'metodo_pago')  #subcarpeta para guardar imagenes

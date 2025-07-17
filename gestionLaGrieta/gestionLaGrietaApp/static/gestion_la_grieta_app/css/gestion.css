@@ -277,3 +277,29 @@ ul.errorlist{
   font-style: italic;
   color: red;
 }
+.btn-outline-warning {
+  color: var(--dorado);
+  border-color: var(--dorado);
+}
+.btn-outline-warning:hover {
+  background-color: var(--dorado);
+  color: black;
+}
+
+.btn-outline-info {
+  color: var(--azul);
+  border-color: var(--azul);
+}
+.btn-outline-info:hover {
+  background-color: var(--azul);
+  color: black;
+}
+
+.btn-outline-success {
+  color: var(--verde);
+  border-color: var(--verde);
+}
+.btn-outline-success:hover {
+  background-color: var(--verde);
+  color: black;
+}
