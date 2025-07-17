@@ -27,7 +27,7 @@
             </div>
             <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-            <button type="submit" class="btn btn-success">Agregar</button>
+            <a href="{% url 'pedido_mesa:agregar',producto.id %}" class="btn btn-success">Agregar</a>
             </div>
         </form>
         </div>
