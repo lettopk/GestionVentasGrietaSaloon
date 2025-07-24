@@ -1,6 +1,7 @@
 <!-- Pedidos -->
     <div class="pedidos">
-      <button class="btn-agregar">+ Agregar Pedido</button>
+      <a href="{% url 'pedido_mesa:crear' %}" class="btn btn-primary mb-3">➕ Crear nuevo pedido</a>
+      
 
       <div>
         {% if request.session.Pedido.item %}

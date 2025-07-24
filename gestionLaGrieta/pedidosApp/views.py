@@ -2,8 +2,20 @@ from django.shortcuts import render, redirect
 from .pedido import Pedido
 from inventarioApp.models import producto
 from pedidosApp.models import pedido, pedido_producto
+from .forms import pedido_form
 
 # Create your views here.
+def crear_pedido(request):
+    if request.method == "POST":
+        form = pedido_form(request.POST)        #Guarda el formulario de creacion
+        if form.is_valid():
+            form.save()                         #Guarda los valores en la tabla
+            return redirect("../")
+    else:
+        form= pedido_form()
+    return render(request, 'complementos/crear_pedido.html', {'form':form})
+
+
 def agregar_producto(request, producto_id):
     pedido = Pedido(request)
     producto = producto.objects.get(id=producto_id)
