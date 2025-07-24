@@ -185,7 +185,8 @@
           {% for producto in productos %}
               <tr><td>{{producto.titulo}} 
               <img  src="{{producto.imagen.url}}" style="width:15%"></td>
-              <td>{{producto.precio_unitario}} </td></tr>
+              <td>{{producto.precio_unitario}} </td>
+              <td>{{producto.id}} </td></tr>
           {% endfor %}
         </tbody>
       </table>

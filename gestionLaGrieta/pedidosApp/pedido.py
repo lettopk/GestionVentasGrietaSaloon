@@ -3,6 +3,7 @@ class Pedido:
         self.request = request
         self.sesion=request.session                     #Verificar el inicio de sesion
         pedido = self.session.get("pedido")             #vincular cada pedido a la sesion iniciada
+        print("sesion iniciada")
         if not pedido:
             pedido = self.session["pedido"]={}          #Crear el pedido
         else: 
@@ -14,8 +15,8 @@ class Pedido:
         if (str(producto.id) not in self.pedido.keys()):
             self.pedido[producto.id]={
                 "producto_id":producto.id,
-                "nombre": producto.nombre,
-                "precio":str(producto.precio),
+                "nombre": producto.titulo,
+                "precio":str(producto.precio_unitario),
                 "cantidad": 1,
                 "imagen":producto.imagen.url
             }

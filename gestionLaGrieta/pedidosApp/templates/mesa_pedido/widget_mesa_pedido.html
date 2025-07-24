@@ -3,8 +3,8 @@
       <button class="btn-agregar">+ Agregar Pedido</button>
 
       <div>
-        {% if request.session.carro.item %}
-            {% for key, value in request.session.carro.tems %}
+        {% if request.session.Pedido.item %}
+            {% for key, value in request.session.Pedido.items %}
                 <tr class="text-center">
                     <td>{{value.titulo}}</td>
                     <td>{{value.cantidad}}</td>
@@ -23,38 +23,6 @@
 
         {% endif %}
     </div>
-
-      <!-- Pedido ejemplo -->
-        <div class="pedido">
-          <div class="pedido-header">
-            <td>🪑 Mesa 1</td>
-            <td>📆 Fecha: 9 de julio de 2025 a las 23:47</td>
-            <button class="btn-toggle" onclick="togglePedido(this)">−</button>
-          </div>
-          <div class="pedido-content">
-            <table>
-              <thead>
-                <tr>
-                  <th>Producto</th>
-                  <th>Cantidad</th>
-                  <th>Precio</th>
-                  <th>Subtotal</th>
-                </tr>
-              </thead>
-              <tbody class="pedido-body">
-                <tr><td>Cerveza</td><td>2</td><td>$8.000</td><td>$16.000</td></tr>
-                <tr><td>Fichas x 20</td><td>1</td><td>$2.500</td><td>$2.500</td></tr>
-              </tbody>
-            </table>
-
-            <button class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#modalAgregarProducto">
-                ➕ Agregar Producto</button>
-
-            <div class="total">💰 Total: ${{importe_total_pedido}}</div>
-            <div class="cancelado">🧾 Cancelado: $20.000</div>
-            <div class="metodo-pago">💲 Pago: <span class="badge badge-digital">Nequi</span></div>
-          </div>
-        </div>
 
       <!-- Pedidos en base de datos -->
         {% for pedido in pedidos %}
@@ -75,17 +43,16 @@
                 </tr>
               </thead>
               <tbody class="pedido-body">
-                <tr>
-                    {% for producto in pedido.producto.all %}
-                      <td>{{producto.titulo}}</td>
+                    {% for producto in productos %}
+                      <tr><td>{{producto.producto}}</td>
+                      <td>{{producto.cantidad}}</td>
+                      <td>{{producto.precio_unitario}}</td>
+                      <td>{{producto.subtotal}}</td></tr>
                     {% endfor %}
-                    <td>{{pedido.cantidad}}</td>
-                    <td>{{pedido.precio_unitario}}</td>
-                    <td>Por definir</td>
-                </tr>
               </tbody>
               </table>
-                <button class="btn-agregar" style="margin: 15px 0;" onclick="agregarProducto(this)">+ Agregar producto</button>
+                <button class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#modalAgregarProducto">
+                ➕ Agregar Producto</button>
                 <div class="total">💰 Total: $18.500</div>
                 <div class="cancelado">🧾 Cancelado: $20.000</div>
                 <div class="metodo-pago">💲 Pago: {% for metodo_pago in pedido.metodos_pago.all %}

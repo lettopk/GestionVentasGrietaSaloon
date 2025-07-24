@@ -19,10 +19,9 @@ class metodo_pago(models.Model):
     #Modelo-Tabla pedido
 class pedido(models.Model):
     mesa = models.CharField(max_length=30)
-    producto = models.ManyToManyField(producto)                     #Relacionado a los productos (muchos a muchos)
-    metodos_pago = models.ManyToManyField(metodo_pago)
-    cantidad = models.IntegerField()
-    precio_unitario = models.IntegerField()
+    #producto = models.ManyToManyField(producto)                     #Relacionado a los productos (muchos a muchos)
+    #cantidad = models.IntegerField()
+    #precio_unitario = models.IntegerField()
     created = models.DateTimeField(auto_now_add= True)
     updated = models.DateTimeField(auto_now_add= True)
     vendedor =  models.ForeignKey(User, on_delete=models.CASCADE)    #Relacionado a los pedidos (uno a muchos), si se elimina el vendedor, se eliminan todos los pedidos
@@ -33,4 +32,16 @@ class pedido(models.Model):
     
     def __str__(self):
         return self.mesa
+    
+class pedido_producto(models.Model):
+    pedido = models.ForeignKey(pedido, on_delete=models.CASCADE, related_name="productos")
+    producto = models.ForeignKey(producto, on_delete=models.CASCADE)
+    cantidad = models.PositiveIntegerField()
+    precio_unitario = models.PositiveIntegerField()
+    
+    def subtotal(self):
+        return self.cantidad * self.precio_unitario
+    
+    def __str__(self):
+        return f"{self.producto.titulo} x {self.cantidad}"
     
