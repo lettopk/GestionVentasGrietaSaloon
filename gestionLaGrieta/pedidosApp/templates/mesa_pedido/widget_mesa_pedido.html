@@ -1,7 +1,9 @@
 <!-- Pedidos -->
     <div class="pedidos">
-      <a href="{% url 'pedido_mesa:crear' %}" class="btn btn-primary mb-3">➕ Crear nuevo pedido</a>
       
+      <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalAgregarPedido">
+          ➕ Agregar Pedido
+      </button>
 
       <div>
         {% if request.session.Pedido.item %}
@@ -71,6 +73,8 @@
   </div>
 
   {% include "complementos/modal_agregar_producto.html" %}
+  {% include "complementos/crear_pedido.html" %}
+    
 
   <script>
     function togglePedido(btn) {
@@ -84,3 +88,4 @@
       }
     }
   </script>
+ 

@@ -11,9 +11,10 @@ def crear_pedido(request):
         if form.is_valid():
             form.save()                         #Guarda los valores en la tabla
             return redirect("../")
-    else:
-        form= pedido_form()
-    return render(request, 'complementos/crear_pedido.html', {'form':form})
+        else:
+            return render(request, 'mesa_pedido/widget_mesa_pedido.html', {'form':form, 'mostrar_modal':True} )
+        
+    return redirect("../")
 
 
 def agregar_producto(request, producto_id):
@@ -62,4 +63,5 @@ def limpiar_pedido(request, producto_id):
 def pedidos (request):
     pedidos = pedido.objects.all()
     productos = pedido_producto.objects.all()
-    return render(request,"pedido/pedidos.html", {"productos":productos,"pedidos":pedidos})
+    form = pedido_form()
+    return render(request,"pedido/pedidos.html", {"productos":productos,"pedidos":pedidos, 'form':form})
