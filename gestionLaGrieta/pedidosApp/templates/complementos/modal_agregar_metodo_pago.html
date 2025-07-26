@@ -1,0 +1,63 @@
+
+<body>
+
+    <div class="modal fade" id="modalAgregarMetodoPago" tabindex="-1" aria-labelledby="modalAgregarMetodoPagoLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content text-white" style="background-color: #1a1a1a;">
+        <div class="modal-header">
+            <h5 class="modal-title" id="modalAgregarMetodoPagoLabel">Agregar Metodo Y valor Pago</h5>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+        </div>
+        
+        <form method="POST">
+            {% csrf_token %}
+            <div class="modal-body">
+            <div class="mb-3">
+                <label for="metodo_pago" class="form-label">Producto</label>
+                <select name="metodo_pago_id" id="metodo_pago" class="form-select">
+                {% for metodo_pago in metodos_pago %}
+                    <option value="{{ metodo_pago.id }}" data-image-url="{{metodo_pago.imagen.url}}"
+                        >{{ metodo_pago.titulo }}
+                    </option>
+                {% endfor %}
+                </select>
+            </div>
+            <div class="mb-3">
+                <label for="cantidad" class="form-label">Valor Pagado</label>
+                <input type="number" class="form-control" id="valor" name="valor" min="1" value="1" required>
+            </div>
+            <div id="imagen-preview" style="margin-top: 10px;">
+                <img id="preview-img" src="" style="max-width: 150px; " />
+            </div>
+            </div>
+            <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+            {% if metodo_pago.id %}
+                <a href="{% url 'pedido_mesa:pago' metodo_pago.id %}" class="btn btn-success">Agregar</a>
+            {% else %}
+                <span class="text-danger">Pago no disponible</span>
+            {% endif %}
+            </div>
+        </form>
+        </div>
+    </div>
+    </div>
+</body>
+
+<script>
+  const select = document.getElementById("metodo_pago");
+  const previewImg = document.getElementById("preview-img");
+
+  select.addEventListener("change", function () {
+    const selectedOption = this.options[this.selectedIndex];
+    const imageUrl = selectedOption.getAttribute("data-image-url");
+
+    if (imageUrl) {
+      previewImg.src = imageUrl;
+      previewImg.style.display = "block";
+    } else {
+      previewImg.src = "";
+      previewImg.style.display = "none";
+    }
+  });
+</script>

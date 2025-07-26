@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from .pedido import Pedido
 from inventarioApp.models import producto
-from pedidosApp.models import pedido, pedido_producto
+from pedidosApp.models import pedido, pedido_producto,metodo_pago
 from .forms import pedido_form
 
 # Create your views here.
@@ -16,22 +16,31 @@ def crear_pedido(request):
         
     return redirect("../")
 
+def agregar_metodo_pago(request,metodo_pago_id):
+    if request.method == "POST":
+        metodo_pago_id = request.POST.get('metodo_pago_id')
+        #imagen = request.POST.get('imagen')
+        valor= int(request.POST.get('valor'))
+        pedido = Pedido(request)
+        metodos_pago = metodo_pago.objects.get(id=metodo_pago_id)
+        pedido.agregar_metodo_pago(metodos_pago= metodos_pago)
+        return render(request, 'mesa_pedido/widget_mesa_pedido.html', {'metodo_pago_id':metodo_pago_id} )
+    else:
+        return render(request, 'mesa_pedido/widget_mesa_pedido.html', {'metodo_pago_id':metodo_pago_id} )
+ 
+
 
 def agregar_producto(request, producto_id):
     pedido = Pedido(request)
     producto = producto.objects.get(id=producto_id)
-    
-    print(producto.id)
     pedido.agregar_producto(producto=producto)
     return redirect("Pedidos")
 
-def agregar_producto(request):
+def agregar_producto(request,producto_id):
     
     if request.method == 'POST':
         producto_id = request.POST.get('producto_id')
         cantidad = int(request.POST.get('cantidad'))
-        print(producto_id,cantidad)
-
         producto = producto.objects.get(id=producto_id)
 
         total = producto.precio_unitario * cantidad
@@ -62,6 +71,8 @@ def limpiar_pedido(request, producto_id):
 
 def pedidos (request):
     pedidos = pedido.objects.all()
+    productos_base = producto.objects.all()
     productos = pedido_producto.objects.all()
+    metodos_pago = metodo_pago.objects.all()
     form = pedido_form()
-    return render(request,"pedido/pedidos.html", {"productos":productos,"pedidos":pedidos, 'form':form})
+    return render(request,"pedido/pedidos.html", {"productos":productos,"productos_base":productos_base,"pedidos":pedidos, 'form':form, "metodos_pago":metodos_pago})

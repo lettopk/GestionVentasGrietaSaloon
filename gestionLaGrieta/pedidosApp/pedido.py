@@ -49,8 +49,21 @@ class Pedido:
     def limpiar_pedido(self):
         self.session["pedido"]={}              #Construye el pedido vacio
         self.session.modified = True
+        
+    #Agregar metodo de pago
+    def agregar_metodo_pago(self,metodo_pago):
+        if (str(metodo_pago.id) not in self.pedido.keys()):
+            self.pedido[metodo_pago.id]={
+                "metodo_pago_id":metodo_pago.id,
+                "titulo": metodo_pago.titulo,
+                "imagen":metodo_pago.imagen.url,
+                "valor":metodo_pago.valor,
+            }           
+        self.guardar_pedido()
     
     #Guardar la sesion de los pedidos
     def guardar_pedido(self):
         self.sesion["pedido"]= self.pedido
         self.sesion.modified = True
+        
+    

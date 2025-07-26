@@ -7,6 +7,7 @@ from inventarioApp.models import producto
 class metodo_pago(models.Model):
     titulo = models.CharField(max_length=20)
     imagen = models.ImageField(upload_to= 'metodo_pago')  #subcarpeta para guardar imagenes
+    valor = models.PositiveIntegerField()
     created = models.DateTimeField(auto_now_add= True)
     updated = models.DateTimeField(auto_now_add= True)
     class Meta:
@@ -19,13 +20,10 @@ class metodo_pago(models.Model):
     #Modelo-Tabla pedido
 class pedido(models.Model):
     mesa = models.CharField(max_length=30)
-    #producto = models.ManyToManyField(producto)                     #Relacionado a los productos (muchos a muchos)
-    #cantidad = models.IntegerField()
-    #precio_unitario = models.IntegerField()
     created = models.DateTimeField(auto_now_add= True)
     updated = models.DateTimeField(auto_now_add= True)
     vendedor =  models.ForeignKey(User, on_delete=models.CASCADE)    #Relacionado a los pedidos (uno a muchos), si se elimina el vendedor, se eliminan todos los pedidos
-    metodos_pago = models.ManyToManyField(metodo_pago)
+
     class Meta:
         verbose_name = 'pedido'
         verbose_name_plural = 'pedidos'

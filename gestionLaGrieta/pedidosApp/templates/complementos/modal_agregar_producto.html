@@ -15,8 +15,8 @@
             <div class="mb-3">
                 <label for="producto" class="form-label">Producto</label>
                 <select name="producto_id" id="producto" class="form-select">
-                {% for producto in productos %}
-                    <option value="{{ producto.id }}">{{ producto.titulo }} - ${{ producto.precio_unitario }}</option>
+                {% for producto_base in productos_base %}
+                    <option value="{{ producto_base.id }}">{{ producto_base.titulo }} - ${{ producto_base.precio_unitario }}</option>
                 {% endfor %}
                 </select>
             </div>
@@ -27,9 +27,14 @@
             </div>
             <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-            {% if modal %}
+            
+            {% if producto.id %}
                 <a href="{% url 'pedido_mesa:agregar' producto.id %}" class="btn btn-success">Agregar</a>
+            {% else %}
+                <span class="text-danger">ID no disponible</span>
             {% endif %}
+                
+            
             </div>
         </form>
         </div>
