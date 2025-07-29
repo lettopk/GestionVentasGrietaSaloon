@@ -7,7 +7,6 @@ from inventarioApp.models import producto
 class metodo_pago(models.Model):
     titulo = models.CharField(max_length=20)
     imagen = models.ImageField(upload_to= 'metodo_pago')  #subcarpeta para guardar imagenes
-    valor = models.PositiveIntegerField()
     created = models.DateTimeField(auto_now_add= True)
     updated = models.DateTimeField(auto_now_add= True)
     class Meta:
@@ -42,4 +41,9 @@ class pedido_producto(models.Model):
     
     def __str__(self):
         return f"{self.producto.titulo} x {self.cantidad}"
+    
+class metodo_pago_pedido(models.Model):
+    pedido = models.ForeignKey(pedido, on_delete=models.CASCADE, related_name="metodo_pago")
+    metodo_pago = models.ForeignKey(metodo_pago, on_delete=models.CASCADE)
+    valor = models.PositiveIntegerField()
     

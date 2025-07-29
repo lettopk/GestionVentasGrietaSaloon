@@ -1,8 +1,8 @@
 from django.shortcuts import render, redirect
 from .pedido import Pedido
 from inventarioApp.models import producto
-from pedidosApp.models import pedido, pedido_producto,metodo_pago
-from .forms import pedido_form
+from pedidosApp.models import pedido, pedido_producto,metodo_pago_pedido, metodo_pago
+from .forms import pedido_form, metodo_pago_form
 
 # Create your views here.
 def crear_pedido(request):
@@ -16,13 +16,24 @@ def crear_pedido(request):
         
     return redirect("../")
 
+def agregar_metodo_pago(request):
+    if request.method == "POST":
+        formp = metodo_pago_form(request.POST)        #Guarda el formulario de creacion
+        if formp.is_valid():
+            formp.save()                         #Guarda los valores en la tabla
+            return redirect("../")
+        else:
+            formp = metodo_pago_form()
+            return render(request, 'complementos/modal_agregar_metodo_pago.html', {'formp':formp, 'mostrar_modal':True} )
+        
+    return redirect("../")
+
 def agregar_metodo_pago(request,metodo_pago_id):
     if request.method == "POST":
         metodo_pago_id = request.POST.get('metodo_pago_id')
-        #imagen = request.POST.get('imagen')
         valor= int(request.POST.get('valor'))
         pedido = Pedido(request)
-        metodos_pago = metodo_pago.objects.get(id=metodo_pago_id)
+        metodos_pago = metodo_pago_pedido.objects.get(id=metodo_pago_id)
         pedido.agregar_metodo_pago(metodos_pago= metodos_pago)
         return render(request, 'mesa_pedido/widget_mesa_pedido.html', {'metodo_pago_id':metodo_pago_id} )
     else:
