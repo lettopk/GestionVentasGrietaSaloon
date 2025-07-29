@@ -18,27 +18,31 @@ def crear_pedido(request):
 
 def agregar_metodo_pago(request):
     if request.method == "POST":
-        formp = metodo_pago_form(request.POST)        #Guarda el formulario de creacion
-        if formp.is_valid():
-            formp.save()                         #Guarda los valores en la tabla
-            return redirect("../")
-        else:
-            formp = metodo_pago_form()
-            return render(request, 'complementos/modal_agregar_metodo_pago.html', {'formp':formp, 'mostrar_modal':True} )
+        print("POST DATA:", request.POST)
+        pedido_id = request.POST.get('pedido_id')
+
+        try:
+            pedido_obj = pedido.objects.get(id=pedido_id)
+        except pedido.DoesNotExist:
+            return ("Pedido no encontrado")
+
+        # Inicializa el formulario con POST y el objeto pedido
+        form = metodo_pago_form(request.POST)
         
+        if form.is_valid():
+            metodo_pago_pedido_obj = form.save(commit=False)
+            metodo_pago_pedido_obj.pedido = pedido_obj
+            metodo_pago_pedido_obj.save()
+            return redirect("../")  # Redirige donde sea necesario
+        else:
+            return render(request, 'mesa_pedido/widget_mesa_pedido.html', {
+                'form': form,
+                'pedido': pedido_obj,
+                'mostrar_modal': True
+            })
+
     return redirect("../")
 
-def agregar_metodo_pago(request,metodo_pago_id):
-    if request.method == "POST":
-        metodo_pago_id = request.POST.get('metodo_pago_id')
-        valor= int(request.POST.get('valor'))
-        pedido = Pedido(request)
-        metodos_pago = metodo_pago_pedido.objects.get(id=metodo_pago_id)
-        pedido.agregar_metodo_pago(metodos_pago= metodos_pago)
-        return render(request, 'mesa_pedido/widget_mesa_pedido.html', {'metodo_pago_id':metodo_pago_id} )
-    else:
-        return render(request, 'mesa_pedido/widget_mesa_pedido.html', {'metodo_pago_id':metodo_pago_id} )
- 
 
 
 def agregar_producto(request, producto_id):
@@ -86,4 +90,5 @@ def pedidos (request):
     productos = pedido_producto.objects.all()
     metodos_pago = metodo_pago.objects.all()
     form = pedido_form()
-    return render(request,"pedido/pedidos.html", {"productos":productos,"productos_base":productos_base,"pedidos":pedidos, 'form':form, "metodos_pago":metodos_pago})
+    formp = metodo_pago_form()
+    return render(request,"pedido/pedidos.html", {"productos":productos,"productos_base":productos_base,"pedidos":pedidos, 'form':form, "metodos_pago":metodos_pago, 'formp':formp})
