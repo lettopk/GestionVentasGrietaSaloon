@@ -3,6 +3,7 @@ from .pedido import Pedido
 from inventarioApp.models import producto
 from pedidosApp.models import pedido, pedido_producto,metodo_pago_pedido, metodo_pago
 from .forms import pedido_form, metodo_pago_form
+from django.db.models import Sum, F, ExpressionWrapper, IntegerField
 
 # Create your views here.
 def crear_pedido(request):
@@ -18,7 +19,6 @@ def crear_pedido(request):
 
 def agregar_metodo_pago(request):
     if request.method == "POST":
-        print("POST DATA:", request.POST)
         pedido_id = request.POST.get('pedido_id')
 
         try:
@@ -42,6 +42,12 @@ def agregar_metodo_pago(request):
             })
 
     return redirect("../")
+
+def listado_pedidos(request):
+    pedidos = pedido.objects.annotate(
+        total_pagado=Sum('metodopagopedido__valor')
+    )
+    return render(request, 'listado_pedidos.html', {'pedidos': pedidos})
 
 
 
@@ -85,10 +91,26 @@ def limpiar_pedido(request, producto_id):
 
 
 def pedidos (request):
-    pedidos = pedido.objects.all()
     productos_base = producto.objects.all()
     productos = pedido_producto.objects.all()
     metodos_pago = metodo_pago.objects.all()
+    metodos_pago_pedido = metodo_pago_pedido.objects.all()
     form = pedido_form()
     formp = metodo_pago_form()
-    return render(request,"pedido/pedidos.html", {"productos":productos,"productos_base":productos_base,"pedidos":pedidos, 'form':form, "metodos_pago":metodos_pago, 'formp':formp})
+    pedidos = pedido.objects.annotate(
+            total_pagado=Sum('metodo_pago_pedido__valor')
+            )
+    
+    for p in pedidos:
+        productos = p.productos.all()
+        p.total_productos = sum(prod.cantidad * prod.precio_unitario for prod in productos)
+    print(pedidos)
+    return render(request,"pedido/pedidos.html", 
+                  {"productos":productos,
+                  "productos_base":productos_base,
+                  "pedidos":pedidos, 
+                  'form':form, 
+                  "metodos_pago":metodos_pago, 
+                  "metodos_pago_pedido":metodos_pago_pedido, 
+                  'formp':formp,
+                  })
