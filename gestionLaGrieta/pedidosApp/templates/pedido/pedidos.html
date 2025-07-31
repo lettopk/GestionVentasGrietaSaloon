@@ -183,17 +183,17 @@
           <tr><td>Hora Arcade</td><td>$10.000</td></tr>
           <tr><td>Fichas x 20</td><td>$2.500</td></tr>
           {% for producto_base in productos_base %}
-              <tr><td>{{producto_base.titulo}} 
-              <img  src="{{producto_base.imagen.url}}" style="width:15%"></td>
-              <td>{{producto_base.precio_unitario}} </td>
-              <td>{{producto_base.id}} </td></tr>
+              <tr>
+                <td>{{producto_base.titulo}}<img  src="{{producto_base.imagen.url}}" style="width:15%"></td>
+                <td>{{producto_base.precio_unitario}} </td>
           {% endfor %}
         </tbody>
       </table>
     </div>
 
-  {% include "mesa_pedido/widget_mesa_pedido.html" %}
 
+    {% include "mesa_pedido/widget_mesa_pedido.html" %}
+  </div>
 </body>
 </html>
 
