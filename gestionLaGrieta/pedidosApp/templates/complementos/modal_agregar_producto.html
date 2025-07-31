@@ -1,40 +1,23 @@
 <div class="modal fade" id="modalAgregarProducto" tabindex="-1" aria-labelledby="modalAgregarProductoLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content text-white" style="background-color: #1a1a1a;">
-        <div class="modal-header">
-            <h5 class="modal-title" id="modalAgregarProductoLabel">Agregar Producto al Pedido</h5>
-            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Cerrar"></button>
-        </div>
-        
-        <form method="POST">
-            {% csrf_token %}
-            <input type="hidden" name="pedido_id" id="input-pedido-id" >
-            <div class="modal-body">
-            <div class="mb-3">
-                <label for="producto" class="form-label">Producto</label>
-                <select name="producto_id" id="producto" class="form-select">
-                {% for producto_base in productos_base %}
-                    <option value="{{ producto_base.id }}">{{ producto_base.titulo }} - ${{ producto_base.precio_unitario }}</option>
-                {% endfor %}
-                </select>
-            </div>
-            <div class="mb-3">
-                <label for="cantidad" class="form-label">Cantidad</label>
-                <input type="number" class="form-control" id="cantidad" name="cantidad" min="1" value="1" required>
-            </div>
-            </div>
-            <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-            
-            {% if producto.id %}
-                <a href="{% url 'pedido_mesa:agregar' producto.id %}" class="btn btn-success">Agregar</a>
-            {% else %}
-                <span class="text-danger">ID no disponible</span>
-            {% endif %}
-                
-            
-            </div>
-        </form>
+        <form method="POST" action="{% url 'pedido_mesa:agregar_producto' %}">
+                {% csrf_token %}
+                  <input type="hidden" name="producto_id" id="input-pedido-id" value=5>
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="modalAgregarProductoLabel">Agregar Producto y cantidad</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                  </div>
+                  <div class="modal-body">
+                    
+                    {{ formpr.as_p }}  <!-- Esto renderiza el formulario que pasas desde la vista -->
+                      
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-success">Generar</button>
+                  </div>
+              </form>
         </div>
     </div>
 </div>

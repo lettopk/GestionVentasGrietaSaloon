@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from .pedido import Pedido
 from inventarioApp.models import producto
 from pedidosApp.models import pedido, pedido_producto,metodo_pago_pedido, metodo_pago
-from .forms import pedido_form, metodo_pago_form
+from .forms import pedido_form, metodo_pago_form, producto_form
 from django.db.models import Sum, F, ExpressionWrapper, IntegerField
 
 # Create your views here.
@@ -19,7 +19,6 @@ def crear_pedido(request):
 
 def agregar_metodo_pago(request):
     if request.method == "POST":
-        print("POST DATA:", request.POST)
         pedido_id = request.POST.get('pedido_id')
 
         try:
@@ -34,7 +33,7 @@ def agregar_metodo_pago(request):
             metodo_pago_pedido_obj = form.save(commit=False)
             metodo_pago_pedido_obj.pedido = pedido_obj
             metodo_pago_pedido_obj.save()
-            return redirect("../")  # Redirige donde sea necesario
+            return redirect("../")  # Redirige principal pedidos
         else:
             return render(request, 'mesa_pedido/widget_mesa_pedido.html', {
                 'form': form,
@@ -46,26 +45,32 @@ def agregar_metodo_pago(request):
 
 
 
-def agregar_producto(request, producto_id):
-    pedido = Pedido(request)
-    producto = producto.objects.get(id=producto_id)
-    pedido.agregar_producto(producto=producto)
-    return redirect("Pedidos")
-
-def agregar_producto(request,producto_id):
-    
-    if request.method == 'POST':
+def agregar_producto(request):
+    if request.method == "POST":
+        print("POST DATA:", request.POST)
         producto_id = request.POST.get('producto_id')
-        cantidad = int(request.POST.get('cantidad'))
-        producto = producto.objects.get(id=producto_id)
 
-        total = producto.precio_unitario * cantidad
+        try:
+            producto_obj = producto.objects.get(id=producto_id)
+        except producto.DoesNotExist:
+            return ("Producto no encontrado")
 
-        pedido = Pedido(request)
-        producto = producto.objects.get(id=producto_id)
-        pedido.agregar_producto(producto=producto)
-        return redirect("Pedidos")
+        # Inicializa el formulario con POST y el objeto pedido
+        form = producto_form(request.POST)
+        
+        if form.is_valid():
+            producto_pedido_obj = form.save(commit=False)
+            producto_pedido_obj.pedido = producto_obj
+            producto_pedido_obj.save()
+            return redirect("../")  # Redirige principal pedidos
+        else:
+            return render(request, 'mesa_pedido/widget_mesa_pedido.html', {
+                'form': form,
+                'pedido': producto_obj,
+                'mostrar_modal': True
+            })
 
+    return redirect("../")
         
 def eliminar_producto(request, producto_id):
     pedido = Pedido(request)
@@ -92,6 +97,7 @@ def pedidos (request):
     metodos_pago_pedido = metodo_pago_pedido.objects.all()
     form = pedido_form()
     formp = metodo_pago_form()
+    formpr = producto_form()
     pedidos = pedido.objects.annotate(
             total_pagado=Sum('metodo_pago__valor')
             )
@@ -103,9 +109,10 @@ def pedidos (request):
     return render(request,"pedido/pedidos.html", 
                   {"productos":productos,
                   "productos_base":productos_base,
-                  "pedidos":pedidos, 
-                  'form':form, 
+                  "pedidos":pedidos,
                   "metodos_pago":metodos_pago, 
                   "metodos_pago_pedido":metodos_pago_pedido, 
-                  'formp':formp,
+                  'form':form,
+                  'formp':formp, 
+                  'formpr':formpr, 
                   })
