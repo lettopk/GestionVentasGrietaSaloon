@@ -19,6 +19,7 @@ def crear_pedido(request):
 
 def agregar_metodo_pago(request):
     if request.method == "POST":
+        print("POST DATA:", request.POST)
         pedido_id = request.POST.get('pedido_id')
 
         try:
@@ -42,12 +43,6 @@ def agregar_metodo_pago(request):
             })
 
     return redirect("../")
-
-def listado_pedidos(request):
-    pedidos = pedido.objects.annotate(
-        total_pagado=Sum('metodopagopedido__valor')
-    )
-    return render(request, 'listado_pedidos.html', {'pedidos': pedidos})
 
 
 
@@ -98,7 +93,7 @@ def pedidos (request):
     form = pedido_form()
     formp = metodo_pago_form()
     pedidos = pedido.objects.annotate(
-            total_pagado=Sum('metodo_pago_pedido__valor')
+            total_pagado=Sum('metodo_pago__valor')
             )
     
     for p in pedidos:

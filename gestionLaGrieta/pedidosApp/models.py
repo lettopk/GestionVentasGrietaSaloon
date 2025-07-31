@@ -38,12 +38,12 @@ class pedido_producto(models.Model):
     
     def subtotal(self):
         return self.cantidad * self.precio_unitario
-        
+    
     def __str__(self):
         return f"{self.producto.titulo} x {self.cantidad}"
     
 class metodo_pago_pedido(models.Model):
-    pedido = models.ForeignKey(pedido, on_delete=models.CASCADE, related_name="metodo_pago_pedido")
+    pedido = models.ForeignKey(pedido, on_delete=models.CASCADE, related_name="metodo_pago")
     metodo_pago = models.ForeignKey(metodo_pago, on_delete=models.CASCADE)
     valor = models.PositiveIntegerField()
     
