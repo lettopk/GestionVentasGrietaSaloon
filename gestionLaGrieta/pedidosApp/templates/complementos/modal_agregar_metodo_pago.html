@@ -1,0 +1,25 @@
+ <!-- Inicia Modal Metodo de Pago-->
+        <div class="modal fade" id="modalAgregarMetodoPago" tabindex="-1" aria-labelledby="modalAgregarMetodoPagoLabel" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content text-white" style="background-color: #1a1a1a;">
+              <form method="POST" action="{% url 'pedido_mesa:agregar_pago' %}">
+                {% csrf_token %}
+                  <input type="hidden" name="pedido_id" id="input-pedido-id">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="modalAgregarMetodoPagoLabel">Agregar Metodo Y valor Pago</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                  </div>
+                  <div class="modal-body">
+                    
+                    {{ formp.as_p }}  <!-- Esto renderiza el formulario que pasas desde la vista -->
+                      
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-success">Generar</button>
+                  </div>
+              </form>
+            </div>
+          </div>
+        </div>
+        <!--Termina Modal Metodo de Pago-->

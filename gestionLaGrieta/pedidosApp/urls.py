@@ -4,12 +4,14 @@ from . import views
 app_name="pedido_mesa"
 
 urlpatterns = [
+    path('', views.pedidos, name="Pedidos"),
     path('crear/', views.crear_pedido, name="crear"),
     path('agregar_pago/', views.agregar_metodo_pago, name="agregar_pago"),
     path('agregar_producto/', views.agregar_producto, name="agregar_producto"),
+    path('incrementar_cantidad/<int:producto_id>/', views.incrementar_cantidad, name="incrementar_cantidad"),
+    path('restar_cantidad/<int:producto_id>/', views.restar_cantidad, name="restar_cantidad"),
+    
     path('eliminar/<int:producto_id>/', views.eliminar_producto, name="eliminar"),
-    path('restar/<int:producto_id>/', views.restar_producto, name="restar"),
     path('limpiar/', views.limpiar_pedido, name="limpiar"),
-    path('', views.pedidos, name="Pedidos"),
     
 ]

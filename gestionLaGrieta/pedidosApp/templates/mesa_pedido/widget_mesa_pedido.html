@@ -47,7 +47,11 @@
               {% if pedido.id == producto.pedido_id %}
                 <tr>
                   <td>{{producto.producto}}</td>
-                  <td>{{producto.cantidad}}</td>
+                  <td>
+                    <a class="btn btn-outline-success" href="{% url 'pedido_mesa:restar_cantidad' producto.id %}">-</a>
+                    {{producto.cantidad}}
+                    <a class="btn btn-outline-success" href="{% url 'pedido_mesa:incrementar_cantidad' producto.id %}">+</a>
+                  </td>
                   <td>{{producto.precio_unitario}}</td>
                   <td>{{producto.subtotal}}</td>
                 </tr>
@@ -71,61 +75,13 @@
             {% endfor %}
           {% endfor %}
         </div>
-      </div>
-      
-        <!-- Inicia Modal Metodo de Pago-->
-        <div class="modal fade" id="modalAgregarMetodoPago" tabindex="-1" aria-labelledby="modalAgregarMetodoPagoLabel" aria-hidden="true">
-          <div class="modal-dialog">
-            <div class="modal-content text-white" style="background-color: #1a1a1a;">
-              <form method="POST" action="{% url 'pedido_mesa:agregar_pago' %}">
-                {% csrf_token %}
-                  <input type="hidden" name="pedido_id" id="input-pedido-id">
-                  <div class="modal-header">
-                    <h5 class="modal-title" id="modalAgregarMetodoPagoLabel">Agregar Metodo Y valor Pago</h5>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Cerrar"></button>
-                  </div>
-                  <div class="modal-body">
-                    
-                    {{ formp.as_p }}  <!-- Esto renderiza el formulario que pasas desde la vista -->
-                      
-                  </div>
-                  <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="submit" class="btn btn-success">Generar</button>
-                  </div>
-              </form>
-            </div>
-          </div>
-        </div>
-        <!--Termina Modal Metodo de Pago-->
-
-        <div class="modal fade" id="modalAgregarProducto" tabindex="-1" aria-labelledby="modalAgregarProductoLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content text-white" style="background-color: #1a1a1a;">
-                <form method="POST" action="{% url 'pedido_mesa:agregar_producto' %}">
-                        {% csrf_token %}
-                          <input type="hidden" name="producto_id" id="input-producto-id" value:5>
-                          <div class="modal-header">
-                            <h5 class="modal-title" id="modalAgregarProductoLabel">Agregar Producto y cantidad</h5>
-                            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Cerrar"></button>
-                          </div>
-                          <div class="modal-body">
-                            
-                            {{ formpr.as_p }}  <!-- Esto renderiza el formulario que pasas desde la vista -->
-                              
-                          </div>
-                          <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                            <button type="submit" class="btn btn-success">Generar</button>
-                          </div>
-                      </form>
-                </div>
-            </div>
-        </div>
+      </div>  
     </div>
     {% endfor %}
   
   {% include "complementos/crear_pedido.html" %}
+  {% include "complementos/modal_agregar_producto.html" %}
+  {% include "complementos/modal_agregar_metodo_pago.html" %}
 
 </div>
 
@@ -141,45 +97,51 @@
         btn.textContent = '+';
       }
     }
-</script>
+    // Minimiza todos los .pedido-content al cargar la página
+    /*document.addEventListener('DOMContentLoaded', function() {
+      document.querySelectorAll('.pedido-content').forEach(function(content) {
+        content.style.display = 'none';
+      });
+      document.querySelectorAll('.btn-toggle').forEach(function(btn) {
+        btn.textContent = '+';
+      });
+    });*/
+     //JavaScrip para enviar el id del pedido para el modal
+    document.querySelectorAll('.btn-agregar-pago').forEach(function(boton) {
+      boton.addEventListener('click', function() {
+        // Encuentra el div más cercano con clase 'pedido'
+        const divPedido = this.closest('.pedido');   
+        if (divPedido) {
+          const pedidoId = divPedido.id; 
+          console.log("ID del pedido:", pedidoId);
+          const inputHidden = document.getElementById("input-pedido-id");
+        if (inputHidden) {
+          inputHidden.value = pedidoId;
+          console.log("Asignado al input:", inputHidden.value);
+        } else {
+          console.warn("No se encontró el input con ID 'input-pedido-id'");
+        }
 
-<script> //JavaScrip para enviar el id del pedido para el modal
-  document.querySelectorAll('.btn-agregar-pago').forEach(function(boton) {
-    boton.addEventListener('click', function() {
-      // Encuentra el div más cercano con clase 'pedido'
-      const divPedido = this.closest('.pedido');   
-      if (divPedido) {
-        const pedidoId = divPedido.id; 
-        console.log("ID del pedido:", pedidoId);
-        const inputHidden = document.getElementById("input-pedido-id");
-      if (inputHidden) {
-        inputHidden.value = pedidoId;
-        console.log("Asignado al input:", inputHidden.value);
-      } else {
-        console.warn("No se encontró el input con ID 'input-pedido-id'");
-      }
-
-      }
+        }
+      });
     });
-  });
+    document.querySelectorAll('.btn-agregar-producto').forEach(function(boton) {
+      boton.addEventListener('click', function() {
+        // Encuentra el div más cercano con clase 'pedido'
+        const divPedido = this.closest('.pedido');   
+        if (divPedido) {
+          const pedidoId = divPedido.id; 
+          console.log("ID del pedido:", pedidoId);
+          const inputHidden = document.getElementById("input-pedido-producto-id");
+        if (inputHidden) {
+          inputHidden.value = pedidoId;
+          console.log("Asignado al input:", inputHidden.value);
+        } else {
+          console.warn("No se encontró el input con ID 'input-pedido-id'");
+        }
 
-  document.querySelectorAll('.btn-agregar-producto').forEach(function(boton) {
-    boton.addEventListener('click', function() {
-      // Encuentra el div más cercano con clase 'pedido'
-      const divPedido = this.closest('.pedido');   
-      if (divPedido) {
-        const pedidoId = divPedido.id; 
-        console.log("ID del pedido:", pedidoId);
-        const inputHidden = document.getElementById("input-pedido-id");
-      if (inputHidden) {
-        inputHidden.value = pedidoId;
-        console.log("Asignado al input:", inputHidden.value);
-      } else {
-        console.warn("No se encontró el input con ID 'input-pedido-id'");
-      }
-
-      }
+        }
+      });
     });
-  });
 </script>
  
