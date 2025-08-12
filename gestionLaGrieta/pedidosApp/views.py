@@ -20,7 +20,11 @@ def pedidos (request):
     for p in pedidos:
         productos = p.productos.all()
         p.total_productos = sum(prod.cantidad * prod.precio_unitario for prod in productos)
-    print(pedidos)
+    
+        if (p.total_pagado or 0) == p.total_productos:
+            p.estado = "Pagado"
+        else:
+            p.estado = "Pendiente"
     return render(request,"pedido/pedidos.html", 
                   {"productos":productos,
                   "productos_base":productos_base,
