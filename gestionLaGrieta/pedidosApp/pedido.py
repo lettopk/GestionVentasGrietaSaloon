@@ -2,10 +2,10 @@ class Pedido:
     def __init__(self, request):
         self.request = request
         self.sesion=request.session                     #Verificar el inicio de sesion
-        pedido = self.session.get("pedido")             #vincular cada pedido a la sesion iniciada
+        pedido = self.session.get("Pedido")             #vincular cada pedido a la sesion iniciada
         print("sesion iniciada")
         if not pedido:
-            pedido = self.session["pedido"]={}          #Crear el pedido
+            pedido = self.session["Pedido"]={}          #Crear el pedido
         else: 
             self.pedido=pedido                          #Continua conel mismo pedido
     
@@ -63,7 +63,7 @@ class Pedido:
     
     #Guardar la sesion de los pedidos
     def guardar_pedido(self):
-        self.sesion["pedido"]= self.pedido
+        self.sesion["Pedido"]= self.pedido
         self.sesion.modified = True
         
     

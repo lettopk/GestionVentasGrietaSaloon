@@ -122,15 +122,5 @@ def restar_cantidad(request, producto_id):
         producto_pedido.delete()  # Si quieres eliminar el producto si la cantidad llega a 0
     return redirect("../../")
 
-#////////////////////////////////////////////////////////
-def eliminar_producto(request, producto_id):
-    pedido = Pedido(request)
-    producto = producto.objects.get(id=producto_id)
-    pedido.eliminar_producto(producto=producto)
-    return redirect("Pedidos")
 
-def limpiar_pedido(request, producto_id):
-    pedido = Pedido(request)
-    pedido.limpiar_pedido()
-    return redirect("Pedidos")
 

@@ -1,92 +1,84 @@
 <!-- Pedidos -->
-<div class="pedidos">
-  <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalAgregarPedido">
-        ➕ Agregar Pedido
-  </button>
-
-  <div>
-    {% if request.session.Pedido.item %}
-      {% for key, value in request.session.Pedido.items %}
-        <tr class="text-center">
-          <td>{{value.titulo}}</td>
-          <td>{{value.cantidad}}</td>
-          <td>{{value.precio_unitario}}</td>
-          <td>{{value.titulo}}</td>
-        </tr>
-      {% endfor %}
-    {% else %}
-      <tr>
-        <td colspan ="4">
-          <div class= "alert alert-danger text-center">Sin productos</div>
-        </td>
-      </tr>
-
-    {% endif %}
+<div>
+  {% if user.is_authenticated %}
+  <div class="pedidos">
+    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalAgregarPedido">
+          ➕ Agregar Pedido
+    </button>
   </div>
 
-  <!-- Pedidos en base de datos -->
-    {% for pedido in pedidos %}
-      <div class="pedido" id={{pedido.id}}>
-        <div class="pedido-header">
-          <td>🪑{{pedido.mesa}}</td>
-          <td>📆 Fecha: {{pedido.updated}} </td>
-          <button class="btn-toggle" onclick="togglePedido(this)">−</button>
-      </div>
-      <div class="pedido-content">
-        <table>
-          <thead>
-            <tr>
-              <th>Producto</th>
-              <th>Cantidad</th>
-              <th>Precio</th>
-              <th>Subtotal</th>
-            </tr>
-          </thead>
-          <tbody class="pedido-body">
-            {% for producto in pedido.productos.all %}
-              {% if pedido.id == producto.pedido_id %}
-                <tr>
-                  <td>{{producto.producto}}</td>
-                  <td>
-                    <a class="btn btn-outline-success" href="{% url 'pedido_mesa:restar_cantidad' producto.id %}">-</a>
-                    {{producto.cantidad}}
-                    <a class="btn btn-outline-success" href="{% url 'pedido_mesa:incrementar_cantidad' producto.id %}">+</a>
-                  </td>
-                  <td>{{producto.precio_unitario}}</td>
-                  <td>{{producto.subtotal}}</td>
-                </tr>
-              {% endif %}
-            {% endfor %} 
-          </tbody>
-        </table>
-        <table>
-          <tr> <br> </tr>
-          <td><button class="btn btn-outline-success btn-agregar-producto" data-bs-toggle="modal" data-bs-target="#modalAgregarProducto">➕ Agregar Producto</button></td>
-          <td><button class="btn btn-outline-success btn-agregar-pago" data-bs-toggle="modal" data-bs-target="#modalAgregarMetodoPago">➕ Metodo Pago </button></td>
-            <td> <p>{{pedido.estado}}</p> </td>
-        <td><div class="total">💰 Total: $ {{ pedido.total_productos }} </div>
-        <div class="cancelado" >🧾 Cancelado:${{pedido.total_pagado | default:0}} </div> 
-        <div class="metodo-pago">💲: 
-          {% for metodo_pago_pedido in metodos_pago_pedido %}
-            {% for metodo_pago in metodos_pago %}
-              {% if pedido.id == metodo_pago_pedido.pedido_id and metodo_pago.id == metodo_pago_pedido.metodo_pago_id %}
-                <!--{{metodo_pago.titulo}} -->
-                <img  src="{{metodo_pago.imagen.url}}" style="width:5%">
-                $:{{metodo_pago_pedido.valor}}
-              {% endif %}
+    <!-- Pedidos en base de datos -->
+      {% for pedido in pedidos %}
+        <div class="pedido" id={{pedido.id}}>
+          <div class="pedido-header">
+            <td>🪑{{pedido.mesa}}</td>
+            <td>📆 Fecha: {{pedido.updated}} </td>
+            <button class="btn-toggle" onclick="togglePedido(this)">−</button>
+        </div>
+        <div class="pedido-content">
+          <table>
+            <thead>
+              <tr>
+                <th>Producto</th>
+                <th>Cantidad</th>
+                <th>Precio</th>
+                <th>Subtotal</th>
+              </tr>
+            </thead>
+            <tbody class="pedido-body">
+              {% for producto in pedido.productos.all %}
+                {% if pedido.id == producto.pedido_id %}
+                  <tr>
+                    <td>{{producto.producto}}</td>
+                    <td>
+                      <a class="btn btn-outline-success" href="{% url 'pedido_mesa:restar_cantidad' producto.id %}">-</a>
+                      {{producto.cantidad}}
+                      <a class="btn btn-outline-success" href="{% url 'pedido_mesa:incrementar_cantidad' producto.id %}">+</a>
+                    </td>
+                    <td>{{producto.precio_unitario}}</td>
+                    <td>{{producto.subtotal}}</td>
+                  </tr>
+                {% endif %}
+              {% endfor %} 
+            </tbody>
+          </table>
+          <table>
+            <tr> <br> </tr>
+            <td><button class="btn btn-outline-success btn-agregar-producto" data-bs-toggle="modal" data-bs-target="#modalAgregarProducto">➕ Agregar Producto</button></td>
+            <td><button class="btn btn-outline-success btn-agregar-pago" data-bs-toggle="modal" data-bs-target="#modalAgregarMetodoPago">➕ Metodo Pago </button></td>
+              <td> <p>{{pedido.estado}}</p> </td>
+          <td><div class="total">💰 Total: $ {{ pedido.total_productos }} </div>
+          <div class="cancelado" >🧾 Cancelado:${{pedido.total_pagado | default:0}} </div> 
+          <div class="metodo-pago">💲: 
+            {% for metodo_pago_pedido in metodos_pago_pedido %}
+              {% for metodo_pago in metodos_pago %}
+                {% if pedido.id == metodo_pago_pedido.pedido_id and metodo_pago.id == metodo_pago_pedido.metodo_pago_id %}
+                  <!--{{metodo_pago.titulo}} -->
+                  <img  src="{{metodo_pago.imagen.url}}" style="width:5%">
+                  $:{{metodo_pago_pedido.valor}}
+                {% endif %}
+              {% endfor %}
             {% endfor %}
-          {% endfor %}
-        </div></td>
-        </table>
-      </div>  
-    </div>
-    {% endfor %}
-  
-  {% include "complementos/crear_pedido.html" %}
-  {% include "complementos/modal_agregar_producto.html" %}
-  {% include "complementos/modal_agregar_metodo_pago.html" %}
-
+          </div></td>
+          </table>
+        </div>  
+      </div>
+      {% endfor %}
+    
+    {% include "complementos/crear_pedido.html" %}
+    {% include "complementos/modal_agregar_producto.html" %}
+    {% include "complementos/modal_agregar_metodo_pago.html" %}
+  {% else %}
+      <tr>
+        <td colspan ="4">
+          <div class= "alert alert-danger text-center">Sin productos, Inicia Sesion.</div>
+        </td>
+      </tr>
+  {% endif %}
+  </div>
 </div>
+
+
 
 
 <script> //JavaScrip para minimizar/maximizar cada pedido
