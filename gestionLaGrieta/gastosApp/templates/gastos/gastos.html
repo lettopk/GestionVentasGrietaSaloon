@@ -3,17 +3,198 @@
 {% load static %}
 
 {% block content %}
-  <h1 style= "color:white;">Gastos</h1>
+  <!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Pedidos - La Grieta</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative&family=Montserrat&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --negro: rgb(26, 26, 26);
+      --violeta: rgb(75, 0, 130);
+      --azul: rgb(0, 191, 255);
+      --verde: rgb(60, 179, 113);
+      --dorado: rgb(255, 215, 0);
+    }
 
-  <div style ="margin:1px auto;">
-  {% if "valido" in  request.GET %}
-    <p style= "color:white;">Informacion enviada Correctamente</p>
-  {% endif %}
-  <form action"" method="POST">
-    {%csrf_token%}
-    <table style= "color:white; margin:20px auto;">{{formulario_gasto.as_table}}</table>
-    <input type="submit" value="Enviar" style ="margin:20px auto;">
+    body {
+      background-color: var(--negro);
+      color: white;
+      font-family: 'Montserrat', sans-serif;
+      margin: 0;
+      padding: 0;
+    }
 
-  </form>
+    header {
+      background: linear-gradient(90deg, var(--violeta), var(--azul));
+      padding: 20px;
+      text-align: center;
+      font-family: 'Cinzel Decorative', cursive;
+      font-size: 2.2rem;
+      color: var(--dorado);
+      box-shadow: 0 0 20px var(--violeta);
+    }
+
+    .main {
+      display: flex;
+      padding: 20px;
+      gap: 20px;
+    }
+
+    .productos {
+      width: 30%;
+      background-color: #1f1f1f;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px #000;
+      height: fit-content;
+    }
+
+    .productos table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .productos th, .productos td {
+      border: 1px solid var(--violeta);
+      padding: 8px;
+      text-align: center;
+    }
+
+    .productos th {
+      background-color: var(--violeta);
+      color: var(--dorado);
+    }
+
+    .pedidos {
+      width: 70%;
+    }
+
+    .btn-agregar {
+      background-color: var(--verde);
+      color: black;
+      font-weight: bold;
+      border: none;
+      padding: 10px 20px;
+      margin-bottom: 20px;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    .pedido {
+      background-color: #1f1f1f;
+      padding: 20px;
+      margin-bottom: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px #000;
+    }
+
+    .pedido-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 1.2rem;
+      margin-bottom: 10px;
+      color: var(--azul);
+    }
+
+    .btn-toggle {
+      background-color: var(--violeta);
+      border: none;
+      color: var(--dorado);
+      font-size: 1.2rem;
+      padding: 4px 12px;
+      border-radius: 50%;
+      cursor: pointer;
+    }
+
+    .pedido-content {
+      display: block;
+      transition: all 0.3s ease;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    th, td {
+      border: 1px solid var(--violeta);
+      padding: 10px;
+      text-align: center;
+      font-size: 0.95rem;
+    }
+
+    th {
+      background-color: var(--violeta);
+      color: var(--dorado);
+    }
+
+    .total, .cancelado {
+      text-align: right;
+      font-weight: bold;
+      color: var(--dorado);
+      margin-top: 10px;
+    }
+
+    .metodo-pago {
+      text-align: right;
+      font-style: italic;
+      color: var(--verde);
+    }
+
+    .badge {
+      padding: 4px 8px;
+      border-radius: 5px;
+      font-weight: bold;
+      font-size: 0.85rem;
+    }
+
+    .badge-efectivo {
+      background-color: var(--verde);
+      color: black;
+    }
+
+    .badge-digital {
+      background-color: var(--dorado);
+      color: black;
+    }
+  </style>
+</head>
+<body>
+
+  <header>La Grieta - Pedidos</header>
+
+  <div class="main">
+    <!-- Productos disponibles -->
+    <div class="gastos">
+      <h2>🛒 Gastos</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Gasto</th>
+            <th>Precio</th>
+          </tr>
+        </thead>
+        <tbody>
+            {% for gasto in gastos %}
+                <tr>
+                <td>{{ gasto.nombre }}</td>
+                <td>${{ gasto.precio }}</td>
+                </tr>
+            {% empty %}
+                <tr>
+                <td colspan="2">No hay gastos registrados.</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+    {% include "forms/registro_gasto.html" %}
   </div>
+</body>
+</html>
+
 {% endblock %}

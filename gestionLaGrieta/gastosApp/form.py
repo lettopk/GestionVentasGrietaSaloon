@@ -1,7 +1,11 @@
 from django import forms
+from inventarioApp.models import producto
 
-class formulario_gastos(forms.Form):
-    nombre = forms.CharField(label="Nombre", required=True)
-    descripcion = forms.CharField(label="Descripcion", widget=forms.Textarea)
-    unidades = forms.IntegerField(label="Unidades", required=True)
-    valor_total= forms.IntegerField(label="Valor total", required=True)
+class gastos_form(forms.ModelForm):
+    class Meta:
+        model = producto
+        fields = ['titulo', 'cantidad', 'precio_unitario', 'precio_total']   
+    
+    def __init__(self, *args, **kwargs):
+        super(gastos_form, self).__init__(*args, **kwargs)
+        self.fields['titulo'].queryset = producto.objects.all()
