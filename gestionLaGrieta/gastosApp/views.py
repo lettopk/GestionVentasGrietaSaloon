@@ -1,31 +1,47 @@
 from django.shortcuts import render, redirect
 from .form import gastos_form
+from .models import Gasto
 from django.core.mail import EmailMessage
 from inventarioApp.models import producto
 
 # Create your views here.
 def gastos (request):
     form_gastos = gastos_form()
-    productos = producto.objects.all()
+    gastos = Gasto.objects.all().order_by('-fecha')
     return render (request, "gastos/gastos.html",{
         "form_gastos": form_gastos,
-        "productos": productos
+        "gastos": gastos
     })
 
 def registro_gastos (request):
-    formulario_gasto = gastos_form()
-    productos = producto.objects.all()
-    
     if request.method=='POST':
         formulario_gasto=gastos_form(data=request.POST)
         if formulario_gasto.is_valid():
+            producto=formulario_gasto.cleaned_data["titulo"]
+            cantidad=formulario_gasto.cleaned_data["cantidad"]
+            precio_unitario=formulario_gasto.cleaned_data["precio_unitario"]
+            precio_total=formulario_gasto.cleaned_data["precio_total"]
+            
+            # Actualiza el producto en el invetario
+            producto.cantidad -= cantidad
+            producto.precio_unitario = precio_unitario  
+            producto.precio_total = precio_total  
+            producto.save()
+            
+            # Guarda el gasto en la tabla de gastos
+            Gasto.objects.create(
+                producto=producto,
+                cantidad=cantidad,
+                precio_unitario=precio_unitario,
+                precio_total=precio_total
+            )
+            
             enviar_correo(request, formulario_gasto)
-            gastos_form.save()                         #Guarda los valores en la tabla
             return redirect("../")
         else:
+            formulario_gasto = gastos_form()
             return render(request,"forms/registro_gasto.html", {
-                "formulario_gasto":formulario_gasto, 
-                "productos": productos
+                "formulario_gasto":formulario_gasto
                 })
         
     return redirect("../")

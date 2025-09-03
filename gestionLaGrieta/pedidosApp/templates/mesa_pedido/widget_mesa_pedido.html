@@ -34,6 +34,13 @@
                       <a class="btn btn-outline-success" href="{% url 'pedido_mesa:restar_cantidad' producto.id %}">-</a>
                       {{producto.cantidad}}
                       <a class="btn btn-outline-success" href="{% url 'pedido_mesa:incrementar_cantidad' producto.id %}">+</a>
+                      {% for producto_base in productos_base %}
+                        {% if producto_base.cantidad == 0 and producto_base.id == producto.producto_id %}
+                          <div class="alert alert-danger" >
+                            <p>No hay stock</p>
+                          </div>
+                        {% endif %}
+                      {% endfor %}
                     </td>
                     <td>{{producto.precio_unitario}}</td>
                     <td>{{producto.subtotal}}</td>

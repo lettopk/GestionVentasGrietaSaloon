@@ -109,16 +109,28 @@ def agregar_producto(request):
 
 def incrementar_cantidad(request, producto_id):
     producto_pedido = pedido_producto.objects.get(id=producto_id)
-    producto_pedido.cantidad += 1
-    producto_pedido.save()
+    producto_obj = producto_pedido.producto
+    
+    if  producto_obj.cantidad > 0:
+        
+        producto_pedido.cantidad += 1       #Aumenta en 1 la cantidad del producto en el pedido
+        producto_pedido.save()
+        producto_obj.cantidad -= 1          #Resta en 1 la cantidad del producto en inventario
+        producto_obj.save()
+        
     return redirect("../../")
 
 def restar_cantidad(request, producto_id):
     producto_pedido = pedido_producto.objects.get(id=producto_id)
+    producto_obj = producto_pedido.producto
     if producto_pedido.cantidad > 1:
         producto_pedido.cantidad -= 1
         producto_pedido.save()
+        producto_obj.cantidad += 1          #Aumenta en 1 la cantidad del producto en inventario
+        producto_obj.save()
     else:
+        producto_obj.cantidad += producto_pedido.cantidad  # Devuelve todo al inventario
+        producto_obj.save()
         producto_pedido.delete()  # Si quieres eliminar el producto si la cantidad llega a 0
     return redirect("../../")
 
