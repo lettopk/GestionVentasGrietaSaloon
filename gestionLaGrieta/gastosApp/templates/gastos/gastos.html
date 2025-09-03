@@ -179,10 +179,13 @@
         </thead>
         <tbody>
             {% for gasto in gastos %}
-                <tr>
-                <td>{{ gasto.nombre }}</td>
-                <td>${{ gasto.precio }}</td>
-                </tr>
+                  <tr>
+                    <td>{{ gasto.producto.titulo }}</td>
+                    <td>{{ gasto.cantidad }}</td>
+                    <td>{{ gasto.precio_unitario }}</td>
+                    <td>{{ gasto.precio_total }}</td>
+                    <td>{{ gasto.fecha }}</td>
+                  </tr>
             {% empty %}
                 <tr>
                 <td colspan="2">No hay gastos registrados.</td>

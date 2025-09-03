@@ -95,9 +95,11 @@ def agregar_producto(request):
             producto_id = form.cleaned_data['producto'].id
             producto_obj = producto.objects.get(id=producto_id)
             producto_pedido_obj.precio_unitario = producto_obj.precio_unitario
-
+            producto_obj.cantidad -= producto_pedido_obj.cantidad               # Resta la cantidad del inventario
+            producto_obj.save()                                                 # Guarda los cambios en el inventario
             producto_pedido_obj.save()
-            return redirect("../")  # Redirige principal pedidos
+            
+            return redirect("../")                                              # Redirige principal pedidos
         else:
             return render(request, 'mesa_pedido/widget_mesa_pedido.html', {
                 'form': form,

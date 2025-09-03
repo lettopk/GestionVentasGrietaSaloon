@@ -1,4 +1,3 @@
-from inventarioApp.models import producto
 
 class Pedido:
     def __init__(self, request):
