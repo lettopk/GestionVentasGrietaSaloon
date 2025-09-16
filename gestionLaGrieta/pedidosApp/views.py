@@ -77,9 +77,7 @@ def agregar_metodo_pago(request):
 
 def agregar_producto(request):
     if request.method == "POST":
-        print("POST DATA:", request.POST)
         pedido_id = request.POST.get('pedido_id')
-
         try:
             pedido_obj = pedido.objects.get(id=pedido_id)
         except pedido.DoesNotExist:

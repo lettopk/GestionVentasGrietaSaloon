@@ -1,13 +1,13 @@
 
 {% block content %}
   <div>
-    <h1 style= "color:white;">Gastos</h1>
+    <h1 style= "color:white;">Registrar Gasto Nuevo</h1>
 
     <div style ="margin:1px auto;">
       {% if "valido" in  request.GET %}
         <p style= "color:white;">Informacion enviada Correctamente</p>
       {% endif %}
-      <form action="" method="POST">
+      <form action="{% url 'Registro_gastos' %}" method="POST">
         {%csrf_token%}
         <table style= "color:white; margin:20px auto;">{{form_gastos.as_table}}</table>
         <input type="submit" class="btn btn-success" value="Enviar" style ="margin:20px auto;">

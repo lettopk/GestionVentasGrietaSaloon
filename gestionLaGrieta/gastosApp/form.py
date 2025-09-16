@@ -2,6 +2,7 @@ from django import forms
 from inventarioApp.models import producto
 
 class gastos_form(forms.ModelForm):
+    titulo = forms.ModelChoiceField(queryset=producto.objects.all(), label="Producto")
     class Meta:
         model = producto
         fields = ['titulo', 'cantidad', 'precio_unitario', 'precio_total']   

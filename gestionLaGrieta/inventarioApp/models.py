@@ -11,7 +11,7 @@ class producto (models.Model ):
     precio_unitario = models.IntegerField()
     precio_total = models.IntegerField()
     created = models.DateTimeField(auto_now_add= True)
-    updated = models.DateTimeField(auto_now_add= True)
+    updated = models.DateTimeField(auto_now= True)
     class Meta:
         verbose_name = 'producto'
         verbose_name_plural = 'productos'
