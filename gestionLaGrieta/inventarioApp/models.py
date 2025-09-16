@@ -6,7 +6,7 @@ from django.utils import timezone
 class producto (models.Model ):
     titulo = models.CharField(max_length=30)
     descripcion = models.CharField(max_length=20)
-    imagen = models.ImageField(upload_to= 'productos', null=True, blank=True)  #subcarpeta paraguardar imagenes, pla carga deimagenes es opcional
+    imagen = models.ImageField(upload_to= 'productos', null=True, blank=True, default='productos/default.jpeg')  #subcarpeta paraguardar imagenes, pla carga deimagenes es opcional
     cantidad = models.IntegerField()
     precio_unitario = models.IntegerField()
     precio_total = models.IntegerField()

@@ -8,7 +8,6 @@ from inventarioApp.models import producto
 def gastos (request):
     form_gastos = gastos_form()
     gastos = Gasto.objects.all().order_by('-fecha')
-    registro_gastos(request)
     return render (request, "gastos/gastos.html",{
         "form_gastos": form_gastos,
         "gastos": gastos
@@ -17,33 +16,53 @@ def gastos (request):
 def registro_gastos (request):
     if request.method=='POST':
         formulario_gasto=gastos_form(data=request.POST)
+        producto_nuevo = 'producto_nuevo' in request.POST
         
         if formulario_gasto.is_valid():
-            producto=formulario_gasto.cleaned_data["titulo"]
-            cantidad=int(formulario_gasto.cleaned_data["cantidad"])
-            precio_unitario=formulario_gasto.cleaned_data["precio_unitario"]
-            precio_total=formulario_gasto.cleaned_data["precio_total"]
-            
-            # Actualiza el producto en el invetario
-            producto.cantidad += cantidad
-            producto.precio_unitario = precio_unitario 
-            producto.save()
+            if producto_nuevo:
+                nombre = request.POST.get('nuevo_nombre')           #obtener el nombre del nuevo producto
+                descripcion = request.POST.get('nuevo_descripcion')
+                cantidad=int(formulario_gasto.cleaned_data["cantidad"])
+                precio_unitario=formulario_gasto.cleaned_data["precio_unitario"]
+                precio_total=formulario_gasto.cleaned_data["precio_total"]
+                nuevo_producto = producto.objects.create(
+                    
+                    titulo=nombre,
+                    descripcion=descripcion,
+                    cantidad=cantidad,
+                    precio_unitario=precio_unitario,
+                    precio_total=precio_total,
+                )
+                
+                Gasto.objects.create(
+                    producto=nuevo_producto,
+                    cantidad=cantidad,
+                    precio_unitario=precio_unitario,
+                    precio_total=precio_total
+                )
+            else:
+                produc = formulario_gasto.cleaned_data["titulo"]          #obtener el producto existente del formulario
+                cantidad=int(formulario_gasto.cleaned_data["cantidad"])
+                precio_unitario=formulario_gasto.cleaned_data["precio_unitario"]
+                precio_total=formulario_gasto.cleaned_data["precio_total"]
+                
+                # Actualiza el producto en el invetario
+                produc.cantidad += cantidad
+                produc.precio_unitario = precio_unitario 
+                produc.save()
             
             # Guarda el gasto en la tabla de gastos
-            Gasto.objects.create(
-                producto=producto,
-                cantidad=cantidad,
-                precio_unitario=precio_unitario,
-                precio_total=precio_total
-            )
+                Gasto.objects.create(
+                    producto=produc,
+                    cantidad=cantidad,
+                    precio_unitario=precio_unitario,
+                    precio_total=precio_total
+                )
             
             #enviar_correo()
             return redirect("../")
         else:
-            formulario_gasto = gastos_form()
-            return render(request,"forms/registro_gasto.html", {
-                "formulario_gasto":formulario_gasto
-                })
+            redirect("../")
         
     return redirect("../")
 

@@ -2,17 +2,61 @@
 {% block content %}
   <div>
     <h1 style= "color:white;">Registrar Gasto Nuevo</h1>
+    <div>
 
+    </div>
     <div style ="margin:1px auto;">
       {% if "valido" in  request.GET %}
         <p style= "color:white;">Informacion enviada Correctamente</p>
       {% endif %}
       <form action="{% url 'Registro_gastos' %}" method="POST">
-        {%csrf_token%}
-        <table style= "color:white; margin:20px auto;">{{form_gastos.as_table}}</table>
-        <input type="submit" class="btn btn-success" value="Enviar" style ="margin:20px auto;">
-
+          {% csrf_token %}
+          <table style="color:white; margin:20px auto;">
+              <tr>
+                  <td>¿Producto nuevo?</td>
+                  <td><input type="checkbox" id="producto_nuevo" name="producto_nuevo" onchange="toggleCampos()"></td>
+              </tr>
+              <tr id="fila_selector">
+                  <td>Producto existente:</td>
+                  <td>{{ form_gastos.titulo }}</td>
+              </tr>
+              <tr id="fila_selector_descripcion" style="display:none;">
+                  <td>Descripcion existente:</td>
+                  <td>{{ form_gastos.descripcion }}</td>
+              </tr>
+              
+              <tr id="fila_texto" style="display:none;">
+                  <td>Nombre del nuevo producto:</td>
+                  <td><input type="text" name="nuevo_nombre"></td>
+              </tr>
+              <tr id="fila_texto_descripcion" style="display:none;">
+                  <td>Descripcion del nuevo producto:</td>
+                  <td><input type="text" name="nuevo_descripcion"></td>
+              </tr>
+              <tr>
+                  <td>Cantidad:</td>
+                  <td>{{ form_gastos.cantidad }}</td>
+              </tr>
+              <tr>
+                  <td>Precio unitario:</td>
+                  <td>{{ form_gastos.precio_unitario }}</td>
+              </tr>
+              <tr>
+                  <td>Precio total:</td>
+                  <td>{{ form_gastos.precio_total }}</td>
+              </tr>
+          </table>
+          <input type="submit" class="btn btn-success" value="Enviar" style="margin:20px auto;">
       </form>
+
+      <script>
+      function toggleCampos() {
+          var check = document.getElementById('producto_nuevo').checked;
+          document.getElementById('fila_selector').style.display = check ? 'none' : '';
+          document.getElementById('fila_texto').style.display = check ? '' : 'none';
+          document.getElementById('fila_texto_descripcion').style.display = check ? '' : 'none';
+      }
+      </script>
     </div>
   </div>
 {% endblock %}
