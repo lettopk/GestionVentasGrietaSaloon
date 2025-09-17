@@ -1,19 +1,19 @@
 
 {% block content %}
   <div>
-    <h1 style= "color:white;">Registrar Gasto Nuevo</h1>
+    <h1 style= "color:white; background-color: var(--violeta);">Registrar Gasto Nuevo</h1>
     <div>
 
     </div>
     <div style ="margin:1px auto;">
-      {% if "valido" in  request.GET %}
+      {% if request.GET.valido %}
         <p style= "color:white;">Informacion enviada Correctamente</p>
       {% endif %}
-      <form action="{% url 'Registro_gastos' %}" method="POST">
+      <form action="{% url 'Registro_gastos' %}" method="POST" enctype="multipart/form-data">
           {% csrf_token %}
-          <table style="color:white; margin:20px auto;">
+          <table style="color:white; margin:20px auto; background-color: #0a063aff; ">
               <tr>
-                  <td>¿Producto nuevo?</td>
+                  <td >¿Producto nuevo?</td>
                   <td><input type="checkbox" id="producto_nuevo" name="producto_nuevo" onchange="toggleCampos()"></td>
               </tr>
               <tr id="fila_selector">
@@ -24,6 +24,10 @@
                   <td>Descripcion existente:</td>
                   <td>{{ form_gastos.descripcion }}</td>
               </tr>
+              <tr id="fila_selector_imagen" style="display:none;">
+                  <td>Imagen existente:</td>
+                  <td>{{ form_gastos.imagen }}</td>
+              </tr>
               
               <tr id="fila_texto" style="display:none;">
                   <td>Nombre del nuevo producto:</td>
@@ -32,6 +36,10 @@
               <tr id="fila_texto_descripcion" style="display:none;">
                   <td>Descripcion del nuevo producto:</td>
                   <td><input type="text" name="nuevo_descripcion"></td>
+              </tr>
+              <tr id="fila_imagen" style="display:none;">
+                  <td>Imagen del nuevo producto:</td>
+                  <td><input type="file" name="nuevo_imagen" accept="image/*"></td>
               </tr>
               <tr>
                   <td>Cantidad:</td>
@@ -55,6 +63,7 @@
           document.getElementById('fila_selector').style.display = check ? 'none' : '';
           document.getElementById('fila_texto').style.display = check ? '' : 'none';
           document.getElementById('fila_texto_descripcion').style.display = check ? '' : 'none';
+          document.getElementById('fila_imagen').style.display = check ? '' : 'none';
       }
       </script>
     </div>

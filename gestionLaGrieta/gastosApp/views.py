@@ -2,7 +2,9 @@ from django.shortcuts import render, redirect
 from .form import gastos_form
 from .models import Gasto
 from django.core.mail import EmailMessage
+from django.urls import reverse
 from inventarioApp.models import producto
+
 
 # Create your views here.
 def gastos (request):
@@ -15,20 +17,26 @@ def gastos (request):
 
 def registro_gastos (request):
     if request.method=='POST':
-        formulario_gasto=gastos_form(data=request.POST)
+        formulario_gasto=gastos_form(request.POST, request.FILES)
         producto_nuevo = 'producto_nuevo' in request.POST
         
         if formulario_gasto.is_valid():
             if producto_nuevo:
                 nombre = request.POST.get('nuevo_nombre')           #obtener el nombre del nuevo producto
+                if producto.objects.filter(titulo__iexact=nombre).exists():         #verificar si el producto ya existe
+                    return redirect("../")
                 descripcion = request.POST.get('nuevo_descripcion')
                 cantidad=int(formulario_gasto.cleaned_data["cantidad"])
+                imagen = request.FILES.get('nuevo_imagen')                  #obtener la imagen del nuevo producto
+                if not imagen:                                              # Si no se subió imagen, usa la ruta por defecto
+                    imagen = 'productos/default.png' 
                 precio_unitario=formulario_gasto.cleaned_data["precio_unitario"]
                 precio_total=formulario_gasto.cleaned_data["precio_total"]
                 nuevo_producto = producto.objects.create(
                     
                     titulo=nombre,
                     descripcion=descripcion,
+                    imagen = imagen,
                     cantidad=cantidad,
                     precio_unitario=precio_unitario,
                     precio_total=precio_total,
@@ -50,6 +58,7 @@ def registro_gastos (request):
                 produc.cantidad += cantidad
                 produc.precio_unitario = precio_unitario 
                 produc.save()
+                
             
             # Guarda el gasto en la tabla de gastos
                 Gasto.objects.create(
@@ -60,7 +69,7 @@ def registro_gastos (request):
                 )
             
             #enviar_correo()
-            return redirect("../")
+            return redirect(reverse('Registro_gastos') + '?valido')
         else:
             redirect("../")
         

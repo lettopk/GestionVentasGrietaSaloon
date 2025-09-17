@@ -4,9 +4,10 @@ from inventarioApp.models import producto
 class gastos_form(forms.ModelForm):
     titulo = forms.ModelChoiceField(queryset=producto.objects.all(), label="Producto", required=False)
     descripcion = forms.CharField(label="Descripcion", disabled=True, required=False)
+    imagen = forms.ImageField(label="Imagen", disabled=True, required=False)
     class Meta:
         model = producto
-        fields = ['titulo','descripcion', 'cantidad', 'precio_unitario', 'precio_total']   
+        fields = ['titulo','descripcion','imagen', 'cantidad', 'precio_unitario', 'precio_total']   
     
     def __init__(self, *args, **kwargs):
         super(gastos_form, self).__init__(*args, **kwargs)

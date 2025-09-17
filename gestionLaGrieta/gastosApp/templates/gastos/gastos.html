@@ -131,19 +131,6 @@
       color: var(--dorado);
     }
 
-    .total, .cancelado {
-      text-align: right;
-      font-weight: bold;
-      color: var(--dorado);
-      margin-top: 10px;
-    }
-
-    .metodo-pago {
-      text-align: right;
-      font-style: italic;
-      color: var(--verde);
-    }
-
     .badge {
       padding: 4px 8px;
       border-radius: 5px;
@@ -160,6 +147,10 @@
       background-color: var(--dorado);
       color: black;
     }
+    
+    .gastos tr {
+    background-color: #0a063aff;
+    }
   </style>
 </head>
 <body>
@@ -174,7 +165,10 @@
         <thead>
           <tr>
             <th>Gasto</th>
-            <th>Precio</th>
+            <th>Cantidad</th>
+            <th>Precio Unitario</th>
+            <th>Precio Total</th>
+            <th>Fecha</th>
           </tr>
         </thead>
         <tbody>
