@@ -31,5 +31,5 @@ class producto_form(forms.ModelForm):
         
     def __init__(self, *args, **kwargs):
         super(producto_form, self).__init__(*args, **kwargs)
-        self.fields['producto'].queryset = producto.objects.all()
+        self.fields['producto'].queryset = producto.objects.filter(cantidad__gt=0)
         self.pedido = pedido

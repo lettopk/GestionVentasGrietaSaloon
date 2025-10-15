@@ -77,6 +77,7 @@ def agregar_metodo_pago(request):
 
 def agregar_producto(request):
     if request.method == "POST":
+        formpr = producto_form()
         pedido_id = request.POST.get('pedido_id')
         try:
             pedido_obj = pedido.objects.get(id=pedido_id)
@@ -99,8 +100,8 @@ def agregar_producto(request):
             
             return redirect("../")                                              # Redirige principal pedidos
         else:
-            return render(request, 'mesa_pedido/widget_mesa_pedido.html', {
-                'form': form,
+            return redirect("../", {
+                'formpr': formpr,
                 'pedido': pedido_obj,
                 'mostrar_modal': True
             })

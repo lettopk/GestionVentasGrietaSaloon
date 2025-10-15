@@ -37,7 +37,12 @@
                       {% for producto_base in productos_base %}
                         {% if producto_base.cantidad == 0 and producto_base.id == producto.producto_id %}
                           <div class="alert alert-danger" >
-                            <p>No hay stock</p>
+                            <p>Quedan 0 unidades en  stock</p>
+                          </div>
+                        {% endif %}
+                        {% if producto_base.cantidad < 0 and producto_base.id == producto.producto_id %}
+                          <div class="alert alert-danger" >
+                            <p>Cantidad requerida no disponible en stock</p>
                           </div>
                         {% endif %}
                       {% endfor %}
@@ -82,6 +87,7 @@
         </td>
       </tr>
   {% endif %}
+
   </div>
 </div>
 
@@ -154,4 +160,5 @@
       });
     });
 </script>
+
  
